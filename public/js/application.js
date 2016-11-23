@@ -17,14 +17,27 @@ $(document).ready(function() {
   $("form#twitter_handle").on("submit",function(event){
         event.preventDefault();
     if ($("#tuit").val() != ""){
+      var t = setInterval(move,1000);
+      var pos = 0;
+      function move(){
+        if(pos >= 5){
+          clearInterval(t);
+          $("textarea#tuit").val("");
+          $("textarea#tuit").prop("readonly",false);
+          $(".boton").attr("disabled",false);
+        }else{
+          pos += 1;
+          $("textarea#tuit").prop("readonly",true);
+          $(".boton").attr("disabled",true);
+        }
+      }
         var url = $("#twitter_handle").attr( "action" );
       $.post(url,$("form#twitter_handle").serialize() , function(data){
-        console.log(data);
+        
       });
       $("#myModal h2").text("Mensaje enviado");
       $(".spinner-2").fadeIn(1000).fadeOut(4000);
-      $("#myModal").delay(4000).fadeIn(500);
-      $("#tuit").val("");
+      $("#myModal").delay(3500).fadeIn(500);
     }
     else
     {
@@ -40,7 +53,6 @@ $(document).ready(function() {
       $(".spinner-2").fadeIn(1000).fadeOut(6000);
       var url = $("a").attr( "href" );
       $.post(url , $("form#twitter_handle").serialize(), function(data){
-        console.log(data);
         $("#nuevo_tuit").html(data);
       });
     });
